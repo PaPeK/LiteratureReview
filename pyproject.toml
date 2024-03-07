@@ -1,6 +1,6 @@
 [project]
-name = "minimal_template"
-description = "minimal_template example package"
+name = "literature_review"
+description = "package to ease literature review"
 version = "0.1.0"
 authors = [
     { name = "Pascal P. Klamser", email = "klamser@physik.hu-berlin.de" }

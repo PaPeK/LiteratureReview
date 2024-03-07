@@ -1,15 +1,31 @@
-# minimal-template 
+# LiteratureReview 
 
-**template repo**
+**literature review repo** to establish a workflow/SOP of a systematic literature search.
+The rough idea is to use a literature search that allows to download the result in json format as <https://www.base-search.net/Search>, check the metainformation (automatically updates abstracts if necessary), combine searches, remove duplicates, label for relevance using label-studio.
+
+At the end you got a csv or json file with relevant literature for your search.
 
 ## Install
-0. optional: `conda env create -f env.yml`
+the `env.yml` contains the line `- -e .` which installs the package in developer mode: 
+1. optional: `conda env create -f env.yml`
+2. activate: `conda activate lit_review`
+
+alternative install it in your existing environment::
 1. normal: `python -m pip install .`
-OR
-1. **developer mode**: Install locally via `pip install -e . --user`
+OR in developer mode:
+1. `pip install -e . --user`
 
 ## How to use:
-* add some bullets here 
+
+1. define your search in in [base](https://www.base-search.net/Search)
+    * better to chose advanced search + select 100 articles per page
+    * example `network tit:aviation tit:covid tit:-transport* doctype:(11* 12* 13 14 15 16 17 19 F) year:[2020 TO *]`
+        * note the `doctype` used include all text-form contributions but excludes Bachelor-, Master-, and PhD-Thesis
+    * also download the output of different searches 
+2. download each results page as json in a folder which we call `d_files`
+3. run `litrev preprocess .` -> joins all json-files + removes duplicates + check for abstract in google-scholar if the current one is too short
+    * the file `output.json` is created
+4. now run `studio-label` (it got installed with the env.yml) and import the `output.json` 
 
 ## FILES
 short explanation of all files in the repo:
@@ -24,22 +40,15 @@ short explanation of all files in the repo:
 * `README.md`: the readme
 * `setup.py`: needed for install via pip
 
-
-## Explanation:
-I will update the package the more I understand of the other template files and functions (poetry, tox vs. pytest, black)
-
-* the `setup.py` file is only needed for developer mode install
-    * in fact the `pyproject.toml` contains a block `[build-system]` with some flit-stuff that should enable developer-mode somehow without `setup.py` file (read)
-
 ## Developer notes
 
 * if the package depends on a custum package `my_other_pack` that you want to edit during development
     1. specify it in the `env.yml` file (so users have it in their env)
     2. when doing `conda create -f env.yml` it will get installed via pip  (good for the users, bad for you since the path is somewhere in your env-directory)
-    3. now reinstall to your local repo fo `my_other_pack` by:
+    3. now reinstall with your local repo folder `my_other_pack` by:
         * activate environment `conda env create -f env.yml`
         * uninstall the package `pip uninstall my_other_pack`
-        * change directory to your local installation `cd /PATH/to/your/local/install/or/my_other_pack`
+        * change directory to your local installation `cd /PATH/to/your/local/my_other_pack`
         * pip-install it in editable mode: `pip install -e . --user`
 
 ### Git settings
